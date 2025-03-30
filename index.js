@@ -1,6 +1,6 @@
 const main = document.querySelector("main");
 
-let exerciceArray = [
+const basicArray = [
   { pic: 0, min: 1 },
   { pic: 1, min: 1 },
   { pic: 2, min: 1 },
@@ -12,6 +12,18 @@ let exerciceArray = [
   { pic: 8, min: 1 },
   { pic: 9, min: 1 },
 ];
+
+let exerciceArray = [];
+
+// Fonction qui se lance toute seule pour le localStorage
+
+(() => {
+  if (localStorage.exercices) {
+    exerciceArray = JSON.parse(localStorage.exercices);
+  } else {
+    exerciceArray = basicArray;
+  }
+})();
 
 // Générateur d'exercice, lancer la routine minutage.
 class Exercice {}
@@ -30,6 +42,7 @@ const utils = {
         exerciceArray.map((exo) => {
           if (exo.pic == e.target.id) {
             exo.min = parseInt(e.target.value);
+            this.store();
           }
         });
       });
@@ -47,6 +60,7 @@ const utils = {
               exerciceArray[position],
             ];
             page.lobby();
+            this.store();
           } else {
             position++;
           }
@@ -66,8 +80,19 @@ const utils = {
         });
         exerciceArray = newArr;
         page.lobby();
+        this.store();
       });
     });
+  },
+
+  reboot: function () {
+    exerciceArray = basicArray;
+    page.lobby();
+    this.store();
+  },
+
+  store: function () {
+    localStorage.exercices = JSON.stringify(exerciceArray);
   },
 };
 
@@ -97,6 +122,7 @@ const page = {
     utils.handleEventMinutes();
     utils.handleEventArrow();
     utils.deleteItem();
+    reboot.addEventListener("click", () => utils.reboot());
   },
   routine: function () {
     utils.pageContent("Routine", "Exercice avec chrono", null);
