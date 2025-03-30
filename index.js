@@ -39,6 +39,7 @@ class Exercice {
     setTimeout(() => {
       if (this.minutes === 0 && this.seconds === "00") {
         this.index++;
+        this.ring();
         if (this.index < exerciceArray.length) {
           this.minutes = exerciceArray[this.index].min;
           this.seconds = 0;
@@ -54,7 +55,7 @@ class Exercice {
         this.seconds--;
         this.updateCountdown();
       }
-    }, 10);
+    }, 1000);
     return (main.innerHTML = `
             <div class ="exercice-container">
                 <p>${this.minutes}:${this.seconds}</p>
@@ -62,6 +63,12 @@ class Exercice {
                 <div>${this.index + 1}/${exerciceArray.length}</div>
             </div>
         `);
+  }
+
+  ring() {
+    const audio = new Audio();
+    audio.src = "ring.mp3";
+    audio.play();
   }
 }
 
@@ -172,6 +179,8 @@ const page = {
       "<button id='start'>Recommencer</button>",
       "<button id='reboot' class='btn-reboot'>Réinintialiser <i class='fas fa-times-circle'></i></button>"
     );
+    start.addEventListener("click", () => this.routine());
+    reboot.addEventListener("click", () => utils.reboot());
   },
 };
 
