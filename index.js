@@ -30,7 +30,6 @@ const utils = {
         exerciceArray.map((exo) => {
           if (exo.pic == e.target.id) {
             exo.min = parseInt(e.target.value);
-            console.log(exerciceArray);
           }
         });
       });
@@ -52,6 +51,21 @@ const utils = {
             position++;
           }
         });
+      });
+    });
+  },
+
+  deleteItem: function () {
+    document.querySelectorAll(".deleteBtn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        let newArr = [];
+        exerciceArray.map((exo) => {
+          if (exo.pic != e.target.dataset.pic) {
+            newArr.push(exo);
+          }
+        });
+        exerciceArray = newArr;
+        page.lobby();
       });
     });
   },
@@ -82,6 +96,7 @@ const page = {
     );
     utils.handleEventMinutes();
     utils.handleEventArrow();
+    utils.deleteItem();
   },
   routine: function () {
     utils.pageContent("Routine", "Exercice avec chrono", null);
