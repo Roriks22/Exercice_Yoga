@@ -23,6 +23,19 @@ const utils = {
     main.innerHTML = content;
     document.querySelector(".btn-container").innerHTML = btn;
   },
+
+  handleEventMinutes: function () {
+    document.querySelectorAll("input[type='number']").forEach((input) => {
+      input.addEventListener("input", (e) => {
+        exerciceArray.map((exo) => {
+          if (exo.pic == e.target.id) {
+            exo.min = parseInt(e.target.value);
+            console.log(exerciceArray);
+          }
+        });
+      });
+    });
+  },
 };
 
 const page = {
@@ -48,6 +61,7 @@ const page = {
       "<ul>" + mapArray + "</ul>",
       "<button id='start'>Commencer <i class='far fa-play-circle'></i></button>"
     );
+    utils.handleEventMinutes();
   },
   routine: function () {
     utils.pageContent("Routine", "Exercice avec chrono", null);
